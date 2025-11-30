@@ -1,1 +1,1 @@
-# AstronomyBeyondLearning
+# Astronomy Beyond Learning

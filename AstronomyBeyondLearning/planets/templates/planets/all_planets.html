@@ -1,0 +1,29 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %} All Planets — ABL {% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/all_planets.css' %}">
+<link rel="stylesheet" href="{% static 'css/planet_card.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<div class="planets-container">
+
+    <h2 class="page-title">All Planets</h2>
+
+    <div class="planets-grid">
+
+        {% for planet in planets %}
+            {% include "planets/planet_card.html" with planet=planet %}
+        {% empty %}
+            <p class="no-planets">No planets found.</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock content %}

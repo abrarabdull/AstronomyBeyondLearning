@@ -1,0 +1,40 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %} {{ planet.name }} — ABL {% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/planet_detail.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<div class="planet-detail-container">
+
+    <div class="planet-detail-card">
+
+        {% if planet.image %}
+        <img src="{{ planet.image.url }}" class="planet-detail-img">
+        {% endif %}
+
+        <h2 class="planet-name">{{ planet.name }}</h2>
+
+        <p class="planet-desc">{{ planet.description }}</p>
+
+        <div class="planet-info">
+            {% if planet.category %}
+            <p><strong>Category:</strong> {{ planet.category.name }}</p>
+            {% endif %}
+
+            {% if planet.created_at %}
+            <p><strong>Created:</strong> {{ planet.created_at|date:"M d, Y" }}</p>
+            {% endif %}
+        </div>
+
+        <a href="{% url 'planets:planets_list' %}" class="back-btn">← Back to all planets</a>
+
+    </div>
+
+</div>
+
+{% endblock content %}

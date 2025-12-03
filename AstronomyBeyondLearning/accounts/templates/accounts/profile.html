@@ -27,10 +27,15 @@
         </p>
 
         {% if request.user == profile_user %}
-        <a class="edit-btn" href="{% url 'accounts:update_profile' %}" data-tooltip="Edit Profile">
-            <i class="material-icons">manage_accounts</i>
-        </a>
+        <div class="profile-actions">
+            <a class="edit-btn" href="{% url 'accounts:update_profile' %}" data-tooltip="Edit Profile">
+                <i class="material-icons">manage_accounts</i>
+            </a>
 
+            <a class="bookmark-btn" href="#" data-tooltip="Saved planets">
+                <i class="material-icons">bookmark</i>
+            </a>
+        </div>
         {% endif %}
 
     </div>
@@ -61,12 +66,10 @@
         </p>
 
 
-
         <div class="section-divider"></div>
 
         <h2 class="section-title">Posts</h2>
         <p class="section-subtitle">Recent posts by {{ profile_user.username }}</p>
-
 
         {% if recent_posts %}
             <div class="user-posts">
@@ -74,9 +77,10 @@
                     {% include "accounts/post_card.html" with post=post %}
                 {% endfor %}
             </div>
+
             <div class="btn-row-right">
-                <a href="{% url 'accounts:user_posts' profile_user.username %}" class="neon-btn">
-                    View all posts
+                <a href="{% url 'accounts:user_posts_type' profile_user.username 'all' %}" class="neon-btn">
+                    View all posts →
                 </a>
             </div>
 
@@ -84,6 +88,10 @@
             <p class="posts-placeholder">No posts yet.</p>
         {% endif %}
 
+
+
+
+        {% if request.user == profile_user %}
 
         <div class="section-divider"></div>
         <h2 class="section-title">Liked Posts</h2>
@@ -94,13 +102,11 @@
                     {% include "accounts/post_card.html" with post=post %}
                 {% endfor %}
             </div>
-
             <div class="btn-row-right">
-                <a href="{% url 'accounts:user_liked_posts' profile_user.username %}" class="neon-btn">
+                <a href="{% url 'accounts:user_posts_type' profile_user.username 'liked' %}" class="neon-btn">
                     View all liked posts →
                 </a>
             </div>
-
         {% else %}
             <p class="posts-placeholder">No liked posts.</p>
         {% endif %}
@@ -116,11 +122,10 @@
                 {% endfor %}
             </div>
             <div class="btn-row-right">
-                <a href="{% url 'accounts:user_bookmarked_posts' profile_user.username %}" class="neon-btn">
+                <a href="{% url 'accounts:user_posts_type' profile_user.username 'bookmarked' %}" class="neon-btn">
                     View all bookmarked posts →
                 </a>
             </div>
-
         {% else %}
             <p class="posts-placeholder">No bookmarked posts.</p>
         {% endif %}
@@ -136,18 +141,15 @@
                 {% endfor %}
             </div>
             <div class="btn-row-right">
-                <a href="{% url 'accounts:user_commented_posts' profile_user.username %}" class="neon-btn">
+                <a href="{% url 'accounts:user_posts_type' profile_user.username 'commented' %}" class="neon-btn">
                     View all commented posts →
                 </a>
             </div>
-
         {% else %}
             <p class="posts-placeholder">No commented posts.</p>
         {% endif %}
 
-
-
-
+        {% endif %} 
 
     </div>
 

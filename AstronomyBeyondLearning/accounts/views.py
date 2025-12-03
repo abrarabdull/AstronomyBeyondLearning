@@ -7,6 +7,8 @@ from django.db import transaction
 from .models import UserProfile
 from .forms import SignUpForm, SignInForm
 from posts.models import Post, PostLike, PostBookmark, PostComment
+from django.db.models import Count
+
 
 
 
@@ -102,7 +104,6 @@ def sign_up(request: HttpRequest):
 
 
 
-
 def user_profile_view(request: HttpRequest, user_name):
 
     try:
@@ -113,29 +114,58 @@ def user_profile_view(request: HttpRequest, user_name):
 
     except Exception as e:
         print("Profile error:", e)
-        return redirect("main:home")   
+        return redirect("main:home")
 
+    recent_posts = (
+        Post.objects.filter(author=profile_user)
+        .annotate(
+            like_count=Count("likes", distinct=True),
+            comment_count=Count("comments", distinct=True)
+        )
+        .order_by("-created_at")[:3]
+    )
 
+    show_private_sections = request.user.is_authenticated and request.user == profile_user
 
+    liked_posts = bookmarked_posts = commented_posts = None
 
-    recent_posts = Post.objects.filter(author=profile_user).order_by("-created_at")[:3]
+    if show_private_sections:
+        liked_posts = (
+            Post.objects.filter(likes__user=profile_user)
+            .annotate(
+                like_count=Count("likes", distinct=True),
+                comment_count=Count("comments", distinct=True)
+            )
+            .distinct()[:3]
+        )
 
-    liked_posts = Post.objects.filter(likes__user=profile_user).distinct()[:3]
+        bookmarked_posts = (
+            Post.objects.filter(bookmarks_post__user=profile_user)
+            .annotate(
+                like_count=Count("likes", distinct=True),
+                comment_count=Count("comments", distinct=True)
+            )
+            .distinct()[:3]
+        )
 
-    bookmarked_posts = Post.objects.filter(bookmarks_post__user=profile_user).distinct()[:3]
+        commented_posts = (
+            Post.objects.filter(comments__user=profile_user)
+            .annotate(
+                like_count=Count("likes", distinct=True),
+                comment_count=Count("comments", distinct=True)
+            )
+            .distinct()[:3]
+        )
 
-    commented_posts = Post.objects.filter(comments__user=profile_user).distinct()[:3]
-
-
-
-    return render(request, 'accounts/profile.html', {
+    return render(request, "accounts/profile.html", {
         "profile_user": profile_user,
-
         "recent_posts": recent_posts,
         "liked_posts": liked_posts,
         "bookmarked_posts": bookmarked_posts,
         "commented_posts": commented_posts,
+        "show_private_sections": show_private_sections,
     })
+
 
 
 def log_out(request: HttpRequest):
@@ -182,69 +212,49 @@ def update_user_profile(request: HttpRequest):
 
     return render(request, "accounts/update_profile.html")
 
-def user_posts_view(request, user_name):
+
+
+def user_posts_type_view(request, user_name, post_type):
 
     try:
         profile_user = User.objects.get(username=user_name)
     except User.DoesNotExist:
         return redirect("main:home")
 
-    posts = Post.objects.filter(author=profile_user).order_by("-created_at")
+    posts = Post.objects.all()
+
+    if post_type == "all":
+        posts = posts.filter(author=profile_user)
+
+    elif post_type == "liked":
+        posts = posts.filter(likes__user=profile_user).distinct()
+
+    elif post_type == "bookmarked":
+        posts = posts.filter(bookmarks_post__user=profile_user).distinct()
+
+    elif post_type == "commented":
+        posts = posts.filter(comments__user=profile_user).distinct()
+
+    else:
+        return redirect("main:home") 
+
+    posts = posts.annotate(
+        like_count=Count("likes", distinct=True),
+        comment_count=Count("comments", distinct=True),
+    ).order_by("-created_at")
+
+    titles = {
+        "all": f"All posts by {profile_user.username}",
+        "liked": f"Posts liked by {profile_user.username}",
+        "bookmarked": f"Posts bookmarked by {profile_user.username}",
+        "commented": f"Posts commented by {profile_user.username}",
+    }
+
+
+    page_title = titles.get(post_type, "Posts")
 
     return render(request, "accounts/user_posts.html", {
         "profile_user": profile_user,
         "posts": posts,
-        "page_title": "All Posts",
+        "page_title": page_title,
     })
-
-
-
-def user_liked_posts_view(request, user_name):
-
-    try:
-        profile_user = User.objects.get(username=user_name)
-    except User.DoesNotExist:
-        return redirect("main:home")
-
-    posts = Post.objects.filter(likes__user=profile_user).distinct()
-
-    return render(request, "accounts/user_posts.html", {
-        "profile_user": profile_user,
-        "posts": posts,
-        "page_title": "Liked Posts",
-    })
-
-
-
-def user_bookmarked_posts_view(request, user_name):
-
-    try:
-        profile_user = User.objects.get(username=user_name)
-    except User.DoesNotExist:
-        return redirect("main:home")
-
-    posts = Post.objects.filter(bookmarks_post__user=profile_user).distinct()
-
-    return render(request, "accounts/user_posts.html", {
-        "profile_user": profile_user,
-        "posts": posts,
-        "page_title": "Bookmarked Posts",
-    })
-
-
-
-def user_commented_posts_view(request, user_name):
-
-    try:
-        profile_user = User.objects.get(username=user_name)
-    except User.DoesNotExist:
-        return redirect("main:home")
-
-    posts = Post.objects.filter(comments__user=profile_user).distinct()
-
-    return render(request, "accounts/user_posts.html", {
-        "profile_user": profile_user,
-        "posts": posts,
-        "page_title": "Commented Posts",
-    })
-

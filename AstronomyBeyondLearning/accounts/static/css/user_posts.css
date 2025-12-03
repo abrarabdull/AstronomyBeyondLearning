@@ -1,0 +1,73 @@
+.posts-view-page {
+    max-width: 1300px;
+    margin: 120px auto 70px;
+    padding: 0 30px;
+}
+
+
+.posts-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 35px;
+    padding-top: 30px;
+}
+
+
+.mini-post-card {
+    width: 280px;
+    background: rgba(20, 22, 40, 0.75);
+    padding: 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(130,150,255,0.35);
+    box-shadow: 0 0 18px rgba(120,140,255,0.3);
+    transition: 0.25s ease;
+    cursor: pointer;
+}
+
+
+.mini-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 28px rgba(150,170,255,0.55);
+}
+
+.mini-post-thumb {
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+
+.mini-date {
+    color: #c9d1ff;
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.mini-title {
+    font-size: 20px;
+    margin: 10px 0 6px;
+}
+
+.mini-post-stats {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.stat-item i {
+    font-size: 18px;
+    color: #bfd3ff;
+}
+
+body {
+    background: url("/static/images/bgspace3.jpg") no-repeat center center fixed;
+    background-size: cover;
+    background-color: black;
+}

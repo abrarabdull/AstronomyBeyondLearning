@@ -149,9 +149,9 @@ body {
 }
 
 .results-count {
-    font-size: 1.2em; /* تصغير حجم الخط */
+    font-size: 1.2em;
     text-align: center;
-    color: #dce2f3; /* نفس لون العنوان */
-    margin-bottom: 40px; /* مسافة بين العنوان والجملة */
-    text-shadow: 0 0 10px rgba(156, 180, 255, 0.5); /* نفس تأثير الظل */
+    color: #dce2f3; 
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(156, 180, 255, 0.5); 
 }

@@ -8,7 +8,7 @@ body {
 
 .cosmic-chronic-container {
     padding: 30px 20px; 
-    margin: 110px auto; 
+    margin: 110px auto 0; 
     color: white;
     max-width: 1200px; 
 }

@@ -12,13 +12,16 @@
 <div class="profile-container">
 
     <div class="profile-sidebar">
-
-        <img src="{% if profile_user.userprofile.profile_picture %}
+        <img 
+            class="avatar"
+            src="{% if profile_user.userprofile.profile_picture %}
                     {{ profile_user.userprofile.profile_picture.url }}
-                  {% else %}
+                {% else %}
                     /media/accounts/profile_pictures/default_userprofile_pic.png
-                  {% endif %}"
-             class="avatar">
+                {% endif %}"
+        >
+
+
 
         <h2 class="username-display">@{{ profile_user.username }}</h2>
 

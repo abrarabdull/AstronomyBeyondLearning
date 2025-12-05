@@ -6,9 +6,11 @@ from django.contrib import messages
 from django.db import transaction
 from .models import UserProfile
 from .forms import SignUpForm, SignInForm
-from posts.models import Post, PostLike, PostBookmark, PostComment
+from posts.models import Post
 from django.db.models import Count
 from planets.models import BookmarkPlanet
+from django.core.paginator import Paginator
+
 
 
 
@@ -237,12 +239,16 @@ def user_posts_type_view(request, user_name, post_type):
         posts = posts.filter(comments__user=profile_user).distinct()
 
     else:
-        return redirect("main:home") 
+        return redirect("main:home")
 
     posts = posts.annotate(
         like_count=Count("likes", distinct=True),
         comment_count=Count("comments", distinct=True),
     ).order_by("-created_at")
+
+    paginator = Paginator(posts, 6)  
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
     titles = {
         "all": f"All posts by {profile_user.username}",
@@ -251,13 +257,11 @@ def user_posts_type_view(request, user_name, post_type):
         "commented": f"Posts commented by {profile_user.username}",
     }
 
-
-    page_title = titles.get(post_type, "Posts")
-
     return render(request, "accounts/user_posts.html", {
         "profile_user": profile_user,
-        "posts": posts,
-        "page_title": page_title,
+        "posts": page_obj, 
+        "page_title": titles.get(post_type, "Posts"),
+        "paginator": paginator,
     })
 
 
@@ -275,9 +279,13 @@ def saved_planets_in_profile(request, username):
         messages.error(request, "You are not allowed to view saved planets for this profile.")
         return redirect("accounts:profile", username=request.user.username)
 
-    saved_planets = BookmarkPlanet.objects.filter(user=profile_user)
+    saved_list = BookmarkPlanet.objects.filter(user=profile_user)
+
+    paginator = Paginator(saved_list, 6)
+    page_number = request.GET.get("page")
+    saved_planets = paginator.get_page(page_number)
 
     return render(request, "accounts/saved_planets.html", {
         "profile_user": profile_user,
-        "saved_planets": saved_planets,
+        "saved_planets": saved_planets, 
     })

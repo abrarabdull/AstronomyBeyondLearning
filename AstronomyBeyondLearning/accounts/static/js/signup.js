@@ -80,3 +80,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+
+document.getElementById("profile-input").addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById("preview-image");
+
+    if (file) {
+        preview.src = URL.createObjectURL(file);
+    }
+});

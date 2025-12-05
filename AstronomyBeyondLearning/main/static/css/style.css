@@ -113,6 +113,8 @@ main {
     background: rgba(255,255,255,0.12);
     border: 1px solid rgba(255,255,255,0.28);
     border-radius: 12px;
+    position: relative;
+
 
     display: flex;
     align-items: center;
@@ -1070,4 +1072,201 @@ main {
 
 }
 
+.msg-alert {
+    animation: pulse 1.5s infinite;
+}
 
+@keyframes badgePulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 80, 80, 0.6);
+    }
+    50% {
+        transform: scale(1.25);
+        box-shadow: 0 0 12px 6px rgba(255, 80, 80, 0.8);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 80, 80, 0.6);
+    }
+}
+.msg-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+
+    background: #ff4d4d;
+    color: white;
+    border-radius: 50%;
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    box-shadow: 0 0 6px rgba(255, 80, 80, 0.7);
+
+    animation: badgePulse 1.4s infinite ease-in-out;
+}
+
+
+.new-msg-banner {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 100%;
+    padding: 12px 25px;
+
+    background: rgba(15, 15, 20, 0.65);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+
+    z-index: 99999;
+    animation: bannerSlide 0.45s ease-out;
+}
+
+.banner-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.banner-icon {
+    font-size: 22px;
+    color: #7EC8FF;
+    filter: drop-shadow(0 0 6px rgba(126,200,255,0.8));
+}
+
+.banner-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.new-msg-more {
+    font-size: 13px;
+    color: #9ec6ff;
+    opacity: .85;
+}
+
+.banner-dismiss {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 6px 12px;
+
+    color: #fff;
+    font-size: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.banner-dismiss:hover {
+    background: rgba(255,255,255,0.18);
+    transform: translateY(-2px);
+}
+
+.banner-dismiss .material-icons {
+    font-size: 18px;
+}
+
+.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+@keyframes bannerSlide {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.msg-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+
+    background: #ff4d4d;
+    color: white;
+    border-radius: 50%;
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    box-shadow: 0 0 6px rgba(255, 80, 80, 0.7);
+
+    animation: badgePulse 1.4s infinite ease-in-out;
+}
+
+@keyframes badgePulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 80, 80, 0.6);
+    }
+    50% {
+        transform: scale(1.25);
+        box-shadow: 0 0 12px 6px rgba(255, 80, 80, 0.8);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 80, 80, 0.6);
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .menu-toggle {
+        display: block !important;
+        font-size: 32px;
+        color: white;
+        cursor: pointer;
+        z-index: 9999;
+    }
+
+    .glass-center {
+        display: none !important;
+    }
+
+    .glass-center.show {
+        display: flex !important;
+        flex-direction: column;
+        position: absolute;
+        top: 75px;
+        left: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.75);
+        padding: 22px;
+        gap: 22px;
+        text-align: center;
+        border-radius: 0 0 18px 18px;
+        z-index: 9998;
+    }
+}

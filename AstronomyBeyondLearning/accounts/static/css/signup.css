@@ -156,3 +156,66 @@ body {
     background-size: cover;
     background-color: black; 
 }
+
+
+/*responsive */
+
+@media (max-width: 900px) {
+
+    .auth-card {
+        width: 85% !important;
+        padding: 28px !important;
+        margin-top: 150px !important;
+    }
+
+    input, textarea {
+        font-size: 15px;
+        padding: 9px;
+    }
+
+    .primary-btn {
+        font-size: 15px;
+        padding: 11px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .auth-card {
+        width: 92% !important;
+        padding: 25px !important;
+        margin-top: 160px !important;
+    }
+
+    .auth-card h2 {
+        font-size: 24px !important;
+    }
+
+    .form-group {
+        margin-bottom: 15px !important;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input, textarea {
+        font-size: 14px;
+        padding: 8px !important;
+    }
+
+    .primary-btn {
+        font-size: 14px !important;
+        padding: 10px !important;
+        border-radius: 6px;
+    }
+}
+.preview-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #4b7bec;
+    margin-bottom: 12px;
+    display: block;
+}

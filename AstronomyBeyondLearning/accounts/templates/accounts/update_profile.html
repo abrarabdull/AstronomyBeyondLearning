@@ -46,8 +46,20 @@
         </div>
 
         <div class="form-group">
-            <label>Profile Picture</label>
-            <input type="file" name="profile_picture">
+            <label>Current Profile Picture</label>
+
+            <img id="preview-image"
+                class="preview-img"
+                src="{% if request.user.userprofile.profile_picture %}
+                        {{ request.user.userprofile.profile_picture.url }}
+                    {% else %}
+                        /media/accounts/profile_pictures/default_userprofile_pic.png
+                    {% endif %}">
+        </div>
+
+        <div class="form-group">
+            <label>Upload New Picture</label>
+            <input type="file" name="profile_picture" id="profile-input">
         </div>
 
         <button type="submit" class="primary-btn">Save Changes</button>
@@ -58,5 +70,7 @@
 {% endblock content %}
 
 {% block extra_js %}
+
+
 <script src="{% static 'js/signup.js' %}"></script>
 {% endblock extra_js %}

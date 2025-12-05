@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
-    profile_picture = models.ImageField(upload_to='accounts/profile_pictures/', default='accounts/profile_pictures/default_userprofile_pic.avif')
+    profile_picture = models.ImageField(upload_to='accounts/profile_pictures/', default='accounts/profile_pictures/default_userprofile_pic.png')
     website = models.URLField(blank=True)
 
     def __str__(self):

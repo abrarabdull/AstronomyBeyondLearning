@@ -71,8 +71,10 @@ def contact_messages_view(request):
         messages.error(request, "You do not have permission to view this page.")
         return redirect("home")
 
-    
     all_msgs = ContactMessage.objects.all().order_by("-created_at")
+
+ 
+    ContactMessage.objects.filter(is_read=False).update(is_read=True)
 
     paginator = Paginator(all_msgs, 6)  
     page_number = request.GET.get("page")
@@ -80,7 +82,7 @@ def contact_messages_view(request):
 
     return render(request, "main/contact_messages.html", {
         "page_obj": page_obj,
-        "messages": page_obj,  
+        "msgs": page_obj,
         "count": all_msgs.count(),
         "paginator": paginator,
     })

@@ -50,13 +50,18 @@
                 class="{% if 'create/' in request.path %}active-link{% endif %}">
                     Add posts
                 </a>
+
+                
             {% endif %}
+
+
 
             {% if user.is_staff %}
                 <a href="{% url 'planets:planets_add_view' %}"
                 class="{% if 'add/' in request.path and 'planets' in request.path %}active-link{% endif %}">
                     Add planets
                 </a>
+                
             {% endif %}
         </div>
 
@@ -89,9 +94,51 @@
                 </a>
 
             {% endif %}
+
+            {% if user.is_staff %}
+                <a href="{% url 'main:contact_messages' %}" 
+                class="glass-btn">
+                    <i class="material-icons">mail</i>
+
+                    {% if unread_count > 0 %}
+                    <span class="msg-badge">{{ unread_count }}</span>
+                    {% endif %}
+                </a>
+
+            {% endif %}
+
+
         </div>
 
     </nav>
+    {% if latest_message %}
+    <div class="new-msg-banner" id="msgBanner">
+
+        <div class="banner-left">
+            <span class="material-icons banner-icon">mail</span>
+
+            <div class="banner-text">
+                <div>
+                    New message from <strong>{{ latest_message.first_name }}</strong> — {{ latest_message.email }}
+                </div>
+
+                {% if unread_count > 1 %}
+                <div class="new-msg-more">
+                    +{{ unread_count|add:"-1" }} more unread messages
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <button class="banner-dismiss" onclick="dismissBanner()">
+            Dismiss
+            <span class="material-icons">close</span>
+        </button>
+
+    </div>
+    {% endif %}
+
+
 
 
     {% if messages %}
@@ -139,8 +186,15 @@
     function toggleMenu() {
         document.querySelector(".glass-center").classList.toggle("show");
     }
-    </script>
+    function dismissBanner() {
+    const banner = document.getElementById("msgBanner");
+    banner.classList.add("fade-out");
 
+    setTimeout(() => {
+        banner.style.display = "none";
+    }, 350);
+    }
+    </script>
 
 </body>
 

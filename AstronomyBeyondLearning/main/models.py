@@ -9,6 +9,7 @@ class ContactMessage(models.Model):
     message = models.TextField()
     accepted_terms = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"

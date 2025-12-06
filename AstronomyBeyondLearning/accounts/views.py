@@ -10,13 +10,7 @@ from posts.models import Post
 from django.db.models import Count
 from planets.models import BookmarkPlanet
 from django.core.paginator import Paginator
-
-
-
-
-
-
-# Create your views here.
+from games.models import QuizProgress
 
 
 
@@ -98,7 +92,6 @@ def sign_up(request: HttpRequest):
                 return redirect("accounts:sign_in")
 
             except Exception as e:
-                print(e)
                 messages.error(request, "Something went wrong, try again.", "alert-danger")
                 return render(request, "404.html", status=404)
 
@@ -124,7 +117,9 @@ def user_profile_view(request: HttpRequest, user_name):
 
     except Exception as e:
         print("Profile error:", e)
-        return redirect("main:home")
+        return render(request, "404.html", status=404)
+    progress = QuizProgress.objects.filter(user=profile_user).first()
+
 
     recent_posts = (
         Post.objects.filter(author=profile_user)

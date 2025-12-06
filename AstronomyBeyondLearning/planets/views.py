@@ -79,7 +79,6 @@ def planet_delete_view(request, planet_id):
 
     return redirect("planets:planets_list")
 
-
 def planet_update_view(request, planet_id):
 
     if not (request.user.is_staff or request.user.has_perm("planets.change_planet")):

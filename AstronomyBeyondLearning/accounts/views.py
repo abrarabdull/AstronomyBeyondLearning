@@ -10,6 +10,8 @@ from posts.models import Post
 from django.db.models import Count
 from planets.models import BookmarkPlanet
 from django.core.paginator import Paginator
+from games.models import QuizProgress
+
 
 
 
@@ -124,6 +126,8 @@ def user_profile_view(request: HttpRequest, user_name):
     except Exception as e:
         print("Profile error:", e)
         return redirect("main:home")
+    progress = QuizProgress.objects.filter(user=profile_user).first()
+
 
     recent_posts = (
         Post.objects.filter(author=profile_user)
@@ -173,6 +177,7 @@ def user_profile_view(request: HttpRequest, user_name):
         "bookmarked_posts": bookmarked_posts,
         "commented_posts": commented_posts,
         "show_private_sections": show_private_sections,
+        "progress": progress, 
     })
 
 
